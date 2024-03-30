@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Home = () => {
-    const [message, setMessage] = useState('');
+  const [data, setData] = useState({ heading: '', text: '' });
 
-    useEffect(() => {
-        axios.get('/home') // Just use the relative path here
-            .then(response => {
-                setMessage(response.data.text);
-            })
-            .catch(error => {
-                setMessage('Error loading message');
-            });
-    }, []);
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8085/home') // Update the URL with your Flask server URL
+      .then(response => {
+        setData(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
-    return (
-        <div>
-            <h1>Welcome back!</h1> {/* Use a static heading since the heading is fixed */}
-            <p>{message}</p> {/* Display the message directly */}
-        </div>
-    );
+  return (
+    <div>
+      <h2>{data.heading}</h2>
+      <p>{data.text}</p>
+    </div>
+  );
 };
 
 export default Home;
